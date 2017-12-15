@@ -1,0 +1,5 @@
+# no emacs temp files
+*~
+# no pyc files
+*.pyc
+
