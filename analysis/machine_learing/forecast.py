@@ -121,3 +121,7 @@ if __name__ == "__main__":
         # Output the hit-rate and the confusion matrix for each model
         print("%s:\n%0.3f" % (m[0], m[1].score(X_test, y_test)))
         print("%s\n" % confusion_matrix(pred, y_test))
+
+
+
+
