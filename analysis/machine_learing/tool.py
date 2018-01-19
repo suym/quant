@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 import tushare as ts
 import datetime as dt
+from feature import SMA,EWMA,BBANDS,CCI,EVM,ForceIndex,ROC
 
 def get_hs300_symbols():
     """
@@ -43,9 +44,10 @@ def create_lagged_series(symbol, start_date, end_date):
 
     # Create the new returns DataFrame
     tsret = pd.DataFrame(index=ts_hs300.index)
-    tsret["Today"] = ts_hs300['price_change'].shift(-1)
+    tsret["price_change"] = ts_hs300['price_change'].shift(-1)
     # Create the "Direction" column (+1 or -1) indicating an up/down day
-    tsret["Direction"] = np.sign(tsret["Today"])
+    tsret["cla_Direction"] = np.sign(tsret["price_change"])
+    tsret["reg_Direction"] = ts_hs300['close'].shift(-1)
 	# Create the other colum
     features = ['open','high','close','low','volume']
     for fe in features:
