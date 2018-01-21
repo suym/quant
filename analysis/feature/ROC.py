@@ -7,11 +7,11 @@ import matplotlib.pyplot as plt
 
 # Rate of Change (ROC)
 def ROC(data,n):
-	N = data['Close'].diff(n)
-	D = data['Close'].shift(n)
-	ROC = pd.Series(N/D,name='Rate of Change')
-	data = data.join(ROC)
-	return data 
+    N = data['Close'].diff(n)
+    D = data['Close'].shift(n)
+    ROC = pd.Series(N/D,name='Rate of Change')
+    data = data.join(ROC)
+    return data 
  
 # Retrieve the NIFTY data from Yahoo finance:
 data = web.DataReader('^NSEI',data_source='yahoo',start='6/1/2015',end='1/1/2016')
@@ -37,3 +37,4 @@ plt.ylabel('ROC values')
 plt.grid(True)
 plt.setp(plt.gca().get_xticklabels(), rotation=30)
 plt.show()
+

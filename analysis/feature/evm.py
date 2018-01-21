@@ -7,12 +7,12 @@ import matplotlib.pyplot as plt
  
 # Ease of Movement 
 def EVM(data, ndays): 
- dm = ((data['High'] + data['Low'])/2) - ((data['High'].shift(1) + data['Low'].shift(1))/2)
- br = (data['Volume'] / 100000000) / ((data['High'] - data['Low']))
- EVM = dm / br 
- EVM_MA = pd.Series(EVM.rolling(window = ndays, center = False).mean(), name = 'EVM') 
- data = data.join(EVM_MA) 
- return data 
+    dm = ((data['High'] + data['Low'])/2) - ((data['High'].shift(1) + data['Low'].shift(1))/2)
+    br = (data['Volume'] / 100000000) / ((data['High'] - data['Low']))
+    EVM = dm / br 
+    EVM_MA = pd.Series(EVM.rolling(window = ndays, center = False).mean(), name = 'EVM') 
+    data = data.join(EVM_MA) 
+    return data 
  
 # Retrieve the AAPL data from Yahoo finance:
 data = web.DataReader('AAPL',data_source='yahoo',start='1/1/2015', end='1/1/2016')
@@ -38,3 +38,4 @@ plt.ylabel('EVM values')
 plt.grid(True)
 plt.setp(plt.gca().get_xticklabels(), rotation=30)
 plt.show()
+

@@ -3,16 +3,16 @@ import pandas as pd
 
 # Simple Moving Average 
 def SMA(data, ndays):
-	SMA = pd.Series(data['close'].rolling(window =ndays).mean(), name = 'SMA' + str(ndays))
-	data = data.join(SMA)
-	return SMA
+    SMA = pd.Series(data['close'].rolling(window =ndays).mean(), name = 'SMA' + str(ndays))
+    data = data.join(SMA)
+    return SMA
 
 # Exponentially-weighted Moving Average 
 def EWMA(data, ndays):
-	EMA = pd.Series(data['close'].ewm(ignore_na=False,span = ndays,min_periods = ndays-1,adjust=True).mean(),
-	name = 'EWMA_' + str(ndays))
-	data = data.join(EMA)
-	return EMA
+    EMA = pd.Series(data['close'].ewm(ignore_na=False,span = ndays,min_periods = ndays-1,adjust=True).mean(),
+    name = 'EWMA_' + str(ndays))
+    data = data.join(EMA)
+    return EMA
 
 # Compute the Bollinger Bands 
 def BBANDS(data, ndays):
@@ -40,12 +40,12 @@ def CCI(data, ndays):
 
 # Ease of Movement 
 def EVM(data, ndays):
-	dm = ((data['high'] + data['low'])/2) - ((data['high'].shift(1) + data['low'].shift(1))/2)
-	br = (data['volume'] / 100000000) / ((data['high'] - data['low']))
-	EVM = dm / br
-	EVM_MA = pd.Series(EVM.rolling(window = ndays, center = False).mean(), name = 'EVM')
-	data = data.join(EVM_MA)
-	return EVM_MA
+    dm = ((data['high'] + data['low'])/2) - ((data['high'].shift(1) + data['low'].shift(1))/2)
+    br = (data['volume'] / 100000000) / ((data['high'] - data['low']))
+    EVM = dm / br
+    EVM_MA = pd.Series(EVM.rolling(window = ndays, center = False).mean(), name = 'EVM')
+    data = data.join(EVM_MA)
+    return EVM_MA
 
 # Force Index 
 def ForceIndex(data, ndays):

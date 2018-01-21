@@ -48,7 +48,7 @@ def create_lagged_series(symbol, start_date, end_date):
     # Create the "Direction" column (+1 or -1) indicating an up/down day
     tsret["cla_Direction"] = np.sign(tsret["price_change"])
     tsret["reg_Direction"] = ts_hs300['close'].shift(-1)
-	# Create the other colum
+    # Create the other colum
     features = ['open','high','close','low','volume']
     for fe in features:
         tsret[fe] = ts_hs300[fe]
@@ -73,7 +73,7 @@ def create_lagged_series(symbol, start_date, end_date):
 
     return tsret
 
-#A helper method for pretty-printing linear models
+    #A helper method for pretty-printing linear models
 def pretty_print_linear(coefs, names = None, sort = False):
     if names == None:
         names = ["X%s" % x for x in range(len(coefs))]
@@ -82,6 +82,4 @@ def pretty_print_linear(coefs, names = None, sort = False):
         lst = sorted(lst,  key = lambda x:-np.abs(x[0]))
     return " + ".join("%s * %s" % (round(coef, 3), name)
                                    for coef, name in lst)
-
-
 

@@ -8,19 +8,18 @@ import pandas_datareader.data as web
 
 # Compute the Bollinger Bands 
 def BBANDS(data, ndays):
+    MA = pd.Series(data['Close'].rolling(window=ndays,center=False).mean()) 
+    SD = pd.Series(data['Close'].rolling(window=ndays,center=False).std())
 
-	MA = pd.Series(data['Close'].rolling(window=ndays,center=False).mean()) 
-	SD = pd.Series(data['Close'].rolling(window=ndays,center=False).std())
+    b1 = MA + (2 * SD)
+    B1 = pd.Series(b1, name = 'Upper BollingerBand') 
+    data = data.join(B1) 
 
-	b1 = MA + (2 * SD)
-	B1 = pd.Series(b1, name = 'Upper BollingerBand') 
-	data = data.join(B1) 
-
-	b2 = MA - (2 * SD)
-	B2 = pd.Series(b2, name = 'Lower BollingerBand') 
-	data = data.join(B2) 
+    b2 = MA - (2 * SD)
+    B2 = pd.Series(b2, name = 'Lower BollingerBand') 
+    data = data.join(B2) 
  
-	return data
+    return data
  
 # Retrieve the Nifty data from Yahoo finance:
 data = web.DataReader('^NSEI',data_source='yahoo',start='1/1/2010', end='1/1/2016')
@@ -30,3 +29,4 @@ data = pd.DataFrame(data)
 n = 5
 NIFTY_BBANDS = BBANDS(data, n)
 print(NIFTY_BBANDS[0:10])
+

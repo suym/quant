@@ -47,3 +47,5 @@ if __name__ == "__main__":
     print("Grid scores calculated on training set:")
     for params, mean_score, scores in model.grid_scores_:
         print("%0.3f for %r" % (mean_score, params))
+
+        

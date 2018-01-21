@@ -7,11 +7,11 @@ import pandas_datareader.data as web
 import matplotlib.pyplot as plt
 # Commodity Channel Index 
 def CCI(data, ndays): 
-	TP = (data['High'] + data['Low'] + data['Close']) / 3 
-	CCI = pd.Series((TP - TP.rolling(window=ndays,center=False).mean()) / (0.015 * TP.rolling(window= ndays,center=False).std()),
-	name = 'CCI') 
-	data = data.join(CCI) 
-	return data
+    TP = (data['High'] + data['Low'] + data['Close']) / 3 
+    CCI = pd.Series((TP - TP.rolling(window=ndays,center=False).mean()) / (0.015 * TP.rolling(window= ndays,center=False).std()),
+    name = 'CCI') 
+    data = data.join(CCI) 
+    return data
 
 # Retrieve the Nifty data from Yahoo finance:
 data = web.DataReader('^NSEI',data_source='yahoo',start='1/1/2014', end='1/1/2016')
@@ -37,3 +37,4 @@ plt.ylabel('CCI values')
 plt.grid(True)
 plt.setp(plt.gca().get_xticklabels(), rotation=30)
 plt.show()
+

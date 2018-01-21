@@ -23,10 +23,10 @@ if __name__ == "__main__":
     # Create a lagged series of the hs300 stock market index
     snpret = create_lagged_series(
         "hs300",
-		dt.datetime(2016, 1, 30),
+        dt.datetime(2016, 1, 30),
         dt.datetime(2017, 12, 31)
     )
-	# Standardized features
+    # Standardized features
     x_ori = snpret.drop(['price_change', 'cla_Direction','reg_Direction'], axis = 1)
     scaler = StandardScaler().fit(x_ori)
     X = scaler.transform(x_ori)
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     y_train = y[y.index < start_test]
     y_test = y[y.index >= start_test]
 
-	# Create the (parametrised) models
+    # Create the (parametrised) models
     print("Hit Rates/Confusion Matrices:\n")
     models = [("LR", LogisticRegression()),
               ("LDA", LDA()),
@@ -67,8 +67,7 @@ if __name__ == "__main__":
 
         # Train each of the models on the training set
         m[1].fit(X_train, y_train)
-		
-		 # Make an array of predictions on the test set
+        # Make an array of predictions on the test set
         pred = m[1].predict(X_test)
 
         # Output the hit-rate and the confusion matrix for each model

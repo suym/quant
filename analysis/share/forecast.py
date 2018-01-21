@@ -31,9 +31,9 @@ def create_lagged_series(symbol, start_date, end_date, lags=5):
 
     # Obtain stock information from Yahoo Finance
     ts = DataReader(
-    	symbol, "yahoo", 
-    	start_date-datetime.timedelta(days=365), 
-    	end_date
+        symbol, "yahoo", 
+        start_date-datetime.timedelta(days=365), 
+        end_date
     )
 
     # Create the new lagged DataFrame
@@ -71,8 +71,8 @@ def create_lagged_series(symbol, start_date, end_date, lags=5):
 if __name__ == "__main__":
     # Create a lagged series of the S&P500 US stock market index
     snpret = create_lagged_series(
-    	"^GSPC", datetime.datetime(2001,1,10), 
-    	datetime.datetime(2005,12,31), lags=5
+        "^GSPC", datetime.datetime(2001,1,10), 
+        datetime.datetime(2005,12,31), lags=5
     )
 
     # Use the prior two days of returns as predictor 
@@ -111,7 +111,6 @@ if __name__ == "__main__":
 
     # Iterate through the models
     for m in models:
-        
         # Train each of the models on the training set
         m[1].fit(X_train, y_train)
 
@@ -121,7 +120,4 @@ if __name__ == "__main__":
         # Output the hit-rate and the confusion matrix for each model
         print("%s:\n%0.3f" % (m[0], m[1].score(X_test, y_test)))
         print("%s\n" % confusion_matrix(pred, y_test))
-
-
-
 

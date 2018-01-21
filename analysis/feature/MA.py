@@ -7,16 +7,16 @@ import matplotlib.pyplot as plt
 
 # Simple Moving Average 
 def SMA(data, ndays): 
- SMA = pd.Series(data['Close'].rolling(window =ndays).mean(), name = 'SMA') 
- data = data.join(SMA) 
- return data
+    SMA = pd.Series(data['Close'].rolling(window =ndays).mean(), name = 'SMA') 
+    data = data.join(SMA) 
+    return data
 
 # Exponentially-weighted Moving Average 
 def EWMA(data, ndays): 
- EMA = pd.Series(pd.ewma(data['Close'], span = ndays, min_periods = ndays - 1), 
- name = 'EWMA_' + str(ndays)) 
- data = data.join(EMA) 
- return data
+    EMA = pd.Series(pd.ewma(data['Close'], span = ndays, min_periods = ndays - 1), 
+    name = 'EWMA_' + str(ndays)) 
+    data = data.join(EMA) 
+    return data
 
 # Retrieve the Nifty data from Yahoo finance:
 data = web.DataReader('^NSEI',data_source='yahoo',start='1/1/2013', end='1/1/2016')
@@ -44,3 +44,4 @@ plt.legend(loc=2,prop={'size':11})
 plt.grid(True)
 plt.setp(plt.gca().get_xticklabels(), rotation=30)
 plt.show()
+

@@ -8,9 +8,9 @@ import pandas_datareader.data as web
 
 # Force Index 
 def ForceIndex(data, ndays): 
-	FI = pd.Series(data['Close'].diff(ndays) * data['Volume'], name = 'ForceIndex') 
-	data = data.join(FI) 
-	return data
+    FI = pd.Series(data['Close'].diff(ndays) * data['Volume'], name = 'ForceIndex') 
+    data = data.join(FI) 
+    return data
 
 
 # Retrieve the Apple data from Yahoo finance:
@@ -21,3 +21,4 @@ data = pd.DataFrame(data)
 n = 1
 AAPL_ForceIndex = ForceIndex(data,n)
 print(AAPL_ForceIndex)
+
