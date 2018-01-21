@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# model1.py
+# model_selection.py
 
 from __future__ import print_function
 
@@ -11,6 +11,7 @@ import pandas as pd
 from tool import create_lagged_series
 
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
@@ -25,9 +26,11 @@ if __name__ == "__main__":
 		dt.datetime(2016, 1, 30),
         dt.datetime(2017, 12, 31)
     )
-	
-    X = snpret[["SMA5","SMA10","SMA20","EWMA_20","Upper BollingerBand","Upper BollingerBand",
-				"Lower BollingerBand","CCI","EVM","ForceIndex","Rate of Change"]]
+	# Standardized features
+    x_ori = snpret.drop(['price_change', 'cla_Direction','reg_Direction'], axis = 1)
+    scaler = StandardScaler().fit(x_ori)
+    X = scaler.transform(x_ori)
+    X = pd.DataFrame(X, index = x_ori.index, columns = x_ori.columns)	
     y = snpret["cla_Direction"]
 
     # The test data is split into two parts: Before and after 1st Jan 2017.

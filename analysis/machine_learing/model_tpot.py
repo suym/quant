@@ -1,22 +1,27 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# model2.py
+# model_tpot.py
 
 from tpot import TPOTClassifier
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from tool import create_lagged_series
+from sklearn.preprocessing import StandardScaler
 import datetime as dt
 
 if __name__ == "__main__":
-    # Create a lagged series of the hs300 stock market index
+	# Create a lagged series of the hs300 stock market index
 	snpret = create_lagged_series(
         "hs300",
         dt.datetime(2016, 1, 30),
         dt.datetime(2017, 12, 31)
-    )
-	X = snpret[["SMA5","SMA10","SMA20","EWMA_20","Upper BollingerBand","Upper BollingerBand",
-                "Lower BollingerBand","CCI","EVM","ForceIndex","Rate of Change"]]
+	)
+	# Standardized features
+	x_ori = snpret.drop(['price_change', 'cla_Direction','reg_Direction'], axis = 1)
+	scaler = StandardScaler().fit(x_ori)
+	X = scaler.transform(x_ori)
+	X = pd.DataFrame(X, index = x_ori.index, columns = x_ori.columns)
 	y = snpret["cla_Direction"]
 
 	X_train, X_test, y_train, y_test = train_test_split(X, y,

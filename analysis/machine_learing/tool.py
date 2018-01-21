@@ -73,6 +73,15 @@ def create_lagged_series(symbol, start_date, end_date):
 
     return tsret
 
+#A helper method for pretty-printing linear models
+def pretty_print_linear(coefs, names = None, sort = False):
+    if names == None:
+        names = ["X%s" % x for x in range(len(coefs))]
+    lst = zip(coefs, names)
+    if sort:
+        lst = sorted(lst,  key = lambda x:-np.abs(x[0]))
+    return " + ".join("%s * %s" % (round(coef, 3), name)
+                                   for coef, name in lst)
 
 
 
