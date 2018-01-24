@@ -4,7 +4,6 @@
 
 from __future__ import print_function
 
-import matplotlib.pyplot as plt
 import pandas as pd
 import tushare as ts
 import datetime as dt
@@ -47,7 +46,7 @@ if __name__ == "__main__":
 
     # Make sure you've created this 
     # relative directory beforehand
-    dl_dir = '../hs300'
+    dl_dir = '../../run/hs300'
 
     # Create the start and end years
     start_year =  str(dt.date(2015, 1, 5))

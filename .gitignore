@@ -2,4 +2,16 @@
 *~
 # no pyc files
 *.pyc
-
+# no data files
+*.csv
+*.dat
+*.root
+# no log files
+*.log
+*.err 
+# jupyter
+python_vs_machine/.ipynb_checkpoints/
+share/.ipynb_checkpoints/
+analysis/machine_learing/.ipynb_checkpoints/
+run/
+analysis/pyroot/.ipynb_checkpoints/
