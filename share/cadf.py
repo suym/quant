@@ -12,7 +12,7 @@ import statsmodels.tsa.stattools as ts
 from sklearn.linear_model import LinearRegression as LR
 import itertools 
 
-from tool import get_hs300_symbols, readstkData
+from tools import get_hs300_symbols, readstkData
 
 
 def cal_cadf(dl_dir, *symbol):

@@ -26,7 +26,7 @@ case $option in
 	 ;;
 
     0.1.1) echo "Get stock data from tushare ..."
-		cd ./analysis/get_data/
+		cd ./job/get_data/
 		python get_hs300_data.py
 		cd ../../
 	   ;;

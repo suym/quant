@@ -8,7 +8,7 @@ from __future__ import print_function
 import datetime as dt
 import numpy as np
 import pandas as pd
-from tool import create_lagged_series
+from tools import create_lagged_series
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
