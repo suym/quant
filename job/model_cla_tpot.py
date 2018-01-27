@@ -17,5 +17,6 @@ if __name__ == "__main__":
 
     tpot.export('./TPOT_report/tpot_class_pipeline.py')
     print 'The scores of test set %s'%tpot.score(X_test, y_test)
+    print 'Mark the finish line'
     
     

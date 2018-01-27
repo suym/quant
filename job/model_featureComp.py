@@ -12,4 +12,5 @@ if __name__ == "__main__":
     results = features_com(X,Y)
     
     print 'Results: %s'%results
+    print 'Mark the finish line'
     

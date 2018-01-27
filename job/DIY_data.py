@@ -1,20 +1,18 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
-# DIY_data.py
+'''
+DIY_data.py
+'''
 
 import numpy as np
 import pandas as pd
 import datetime as dt
-from tools import create_lagged_series
+from tools import create_lagged_series,store_data
 from sklearn.preprocessing import StandardScaler
 
 def data_from_tushare():
-    snpret = create_lagged_series(
-        "hs300",
-        dt.datetime(2016, 1, 30),
-        dt.datetime(2017, 12, 31)
-    )
+    snpret = pd.read_csv('/besfs/users/suym/6.6.4.p01/Analysis/plot/python_doc/quant/run/tushare/hs300/20160130__20171231/hs300.csv',
+                         index_col="date", encoding='gbk')
     # Standardized features
     x_ori = snpret.drop(['price_change', 'cla_Direction','reg_Direction'], axis = 1)
     scaler = StandardScaler().fit(x_ori)

@@ -14,4 +14,6 @@ if __name__ == "__main__":
     print 'The number of features %s'%results[0]
     print 'Explained variances %s'%results[1]
     print 'To DIY %s'%results[2]
+    print 'Mark the finish line'
+    
     

@@ -5,7 +5,8 @@ My tools
 """
 __author__ = "Su Yumo <suyumo@buaa.edu.cn>"
 
-
+import os
+import sys
 import pandas as pd
 import numpy as np
 import tushare as ts
@@ -89,9 +90,21 @@ def create_lagged_series(symbol, start_date, end_date):
 
     # To remove a null value
     tsret=tsret.dropna(axis=0, how='any', thresh=None, subset=None, inplace=False)
-
+    
     return tsret
 
+def store_data(symbol, start_date, end_date):
+    sto_data = create_lagged_series(symbol, start_date, end_date)
+    date1 = start_date.strftime("%Y%m%d")
+    date2 = end_date.strftime("%Y%m%d")
+    filename = symbol+'/'+date1+'__'+date2
+    filepath = '/besfs/users/suym/6.6.4.p01/Analysis/plot/python_doc/quant/run/tushare'
+    path = filepath+'/'+filename
+    if path != '' and not os.access(path, os.F_OK) :
+        sys.stdout.write('Creating dir %s ...\n'  % path)
+        os.makedirs(path)
+    sto_data.to_csv('%s/%s.csv'%(path,symbol))
+    
     #A helper method for pretty-printing linear models
 def pretty_print_linear(coefs, names = None, sort = False):
     if names == None:
@@ -114,7 +127,7 @@ def features_com(X, Y):
 
     ranks=pd.DataFrame(index=X.columns)
 
-    lr = LinearRegression(normalize=True)
+    lr = LinearRegression(normalize=True,n_jobs=-1)
     lr.fit(X, Y)
     ranks["Linear reg"] = rank_to_list(np.abs(lr.coef_))
 
@@ -135,7 +148,7 @@ def features_com(X, Y):
     rfe.fit(X,Y)
     ranks["RFE"] = rank_to_list(map(float, rfe.ranking_), order=-1)
 
-    rf = RandomForestRegressor()
+    rf = RandomForestRegressor(n_jobs=-1)
     rf.fit(X,Y)
     ranks["RF"] = rank_to_list(rf.feature_importances_)
 

@@ -16,5 +16,6 @@ if __name__ == "__main__":
     
     print 'The best parameters %s'%results[0]
     print 'The scores of test set %s'%results[1]
+    print 'Mark the finish line'
     
     
