@@ -17,14 +17,14 @@ case $option in
        echo "Anaconda2"
        echo "tushare, minepy, pandas-datareader"
        echo "py-xgboost, TPOT, jupyter_contrib_nbextensions"
-       echo "root_numpy, root_pandas"
+       echo "root_numpy, root_pandas, deap, keras"
        echo "         "
        ;;
     2) echo "How to install these softwares....."
        echo "         "
-       echo "conda install py-xgboost"
+       echo "conda install py-xgboost, keras"
        echo "pip install tushare, minepy, pandas-datareader, TPOT"
-       echo "pip install root_numpy, root_pandas"
+       echo "pip install root_numpy, root_pandas, deap"
        echo "conda install -c conda-forge jupyter_contrib_nbextensions"
        echo "         "
        ;;

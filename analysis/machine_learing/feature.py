@@ -2,20 +2,20 @@
 import pandas as pd
 
 # Simple Moving Average 
-def SMA(data, ndays):
+def TY_SMA(data, ndays):
     SMA = pd.Series(data['close'].rolling(window =ndays).mean(), name = 'SMA' + str(ndays))
     data = data.join(SMA)
     return SMA
 
 # Exponentially-weighted Moving Average 
-def EWMA(data, ndays):
+def TY_EWMA(data, ndays):
     EMA = pd.Series(data['close'].ewm(ignore_na=False,span = ndays,min_periods = ndays-1,adjust=True).mean(),
     name = 'EWMA_' + str(ndays))
     data = data.join(EMA)
     return EMA
 
 # Compute the Bollinger Bands 
-def BBANDS(data, ndays):
+def TY_BBANDS(data, ndays):
 
     MA = pd.Series(data['close'].rolling(window=ndays,center=False).mean())
     SD = pd.Series(data['close'].rolling(window=ndays,center=False).std())
@@ -31,7 +31,7 @@ def BBANDS(data, ndays):
     return B1,B2
 
 # Commodity Channel Index 
-def CCI(data, ndays):
+def TY_CCI(data, ndays):
     TP = (data['high'] + data['low'] + data['close']) / 3
     CCI = pd.Series((TP - TP.rolling(window=ndays,center=False).mean()) / (0.015 * TP.rolling(window= ndays,center=False).std()),
     name = 'CCI')
@@ -39,7 +39,7 @@ def CCI(data, ndays):
     return CCI
 
 # Ease of Movement 
-def EVM(data, ndays):
+def TY_EVM(data, ndays):
     dm = ((data['high'] + data['low'])/2) - ((data['high'].shift(1) + data['low'].shift(1))/2)
     br = (data['volume'] / 100000000) / ((data['high'] - data['low']))
     EVM = dm / br
@@ -48,13 +48,13 @@ def EVM(data, ndays):
     return EVM_MA
 
 # Force Index 
-def ForceIndex(data, ndays):
+def TY_ForceIndex(data, ndays):
     FI = pd.Series(data['close'].diff(ndays) * data['volume'], name = 'ForceIndex')
     data = data.join(FI)
     return FI
 
 # Rate of Change (ROC)
-def ROC(data,ndays):
+def TY_ROC(data,ndays):
     N = data['close'].diff(ndays)
     D = data['close'].shift(ndays)
     ROC = pd.Series(N/D,name='Rate of Change')

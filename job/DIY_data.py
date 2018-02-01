@@ -31,11 +31,13 @@ def data_from_input():
     X = scaler.transform(x_ori)
     X = pd.DataFrame(X, index = x_ori.index, columns = x_ori.columns)
     Y = hft_data["realY"]
+    X = X[X.index > 100000]
+    Y = Y[Y.index > 100000]
    
     X_tushare, Y_tushare = data_from_tushare()
  
-    #return X,Y
-    return X_tushare, Y_tushare
+    return X,Y
+    #return X_tushare, Y_tushare
 
     
 

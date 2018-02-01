@@ -6,5 +6,5 @@ job=${Work_Dir}/job/
 
 
 
-python ${job}/model_cla_RandomForestRegressor.py
+python ${job}/model_cla_SVC_linear.py
 

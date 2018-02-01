@@ -10,8 +10,3 @@ Preliminary framework
 
 > git clone git@github.com:suym/quant.git quant
 
-## Submit jobs
-
-> ./submit.sh
-
-

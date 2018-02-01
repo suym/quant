@@ -6,4 +6,6 @@ job=${Work_Dir}/job/
 
 
 
-python ${job}/model_featureComp.py
+python ${job}/model_cla_SVC_rbf.py
+
+

@@ -14,9 +14,9 @@ if __name__ == "__main__":
                                                     train_size=0.75, test_size=0.25,stratify=Y)
     tpot = TPOTClassifier(generations=5, population_size=20, verbosity=2)
     tpot.fit(X_train, y_train)
-
-    tpot.export('./TPOT_report/tpot_class_pipeline.py')
     print 'The scores of test set %s'%tpot.score(X_test, y_test)
     print 'Mark the finish line'
+
+    tpot.export('./TPOT_report/tpot_class_pipeline.py')
     
     

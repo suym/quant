@@ -6,5 +6,7 @@ job=${Work_Dir}/job/
 
 
 
-python ${job}/model_cla_SVC.py
+python ${job}/model_reg_GradientBoostingRegressor_lslad.py
+
+
 

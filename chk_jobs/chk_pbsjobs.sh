@@ -13,10 +13,20 @@ if [[ $# -eq 0 ]]; then
     printf "\n\t%-5s  %-40s\n"  "2"  "Check model_IncrementalPCA log files  "
     printf "\n\t%-5s  %-40s\n"  "3"  "Check model_PCA log files  "
     printf "\n\t%-5s  %-40s\n"  "4"  "Check model_selection log files  "
-    printf "\n\t%-5s  %-40s\n"  "4.1"  "Check model_cla_LinearSVC log files  "
-    printf "\n\t%-5s  %-40s\n"  "4.2"  "Check model_cla_LogisticRegression log files  "
-    printf "\n\t%-5s  %-40s\n"  "4.3"  "Check model_cla_RandomForestRegressor log files  "
-    printf "\n\t%-5s  %-40s\n"  "4.4"  "Check model_cla_SVC log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.1.1"  "Check model_cla_LinearSVC log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.1.2"  "Check model_cla_LogisticRegression log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.1.3"  "Check model_cla_RandomForestClassifier log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.1.4"  "Check model_cla_SVC_linear log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.1.5"  "Check model_cla_SVC_rbf log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.1.6"  "Check model_cla_GradientBoostingClassifier log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.2.1"  "Check model_reg_Lasso log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.2.2"  "Check model_reg_Ridge log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.2.3"  "Check model_reg_GradientBoostingRegressor_huber log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.2.4"  "Check model_reg_GradientBoostingRegressor_lslad log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.2.5"  "Check model_reg_LinearSVR log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.2.6"  "Check model_reg_RandomForestRegressor log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.2.7"  "Check model_reg_SVR_linear log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.2.8"  "Check model_reg_SVR_rbf log files  "
     printf "\n\t%-5s  %-40s\n"  "5"  "Check model_tpot log files  "
     printf "\n\t%-5s  %-40s\n"  "5.1"  "Check model_cla_tpot log files  "
     printf "\n\t%-5s  %-40s\n"  "5.2"  "Check model_reg_tpot log files  "
@@ -44,24 +54,74 @@ case $option in
     4) echo "Check model_selection log files..."
 	    ;;
 
-    4.1) echo "Check model_cla_LinearSVC log files..."
+    4.1.1) echo "Check model_cla_LinearSVC log files..."
     cd $Log/model_selection
     cat model_cla_LinearSVC.log
      ;;
 
-    4.2) echo "Check model_cla_LogisticRegression log files..."
+    4.1.2) echo "Check model_cla_LogisticRegression log files..."
     cd $Log/model_selection
     cat model_cla_LogisticRegression.log
      ;;
 
-    4.3) echo "Check model_cla_RandomForestRegressor log files..."
+    4.1.3) echo "Check model_cla_RandomForestClassifier log files..."
     cd $Log/model_selection
-    cat model_cla_RandomForestRegressor.log
+    cat model_cla_RandomForestClassifier.log
      ;;
 
-    4.4) echo "Check model_cla_SVC log files..."
+    4.1.4) echo "Check model_cla_SVC_linear log files..."
     cd $Log/model_selection
-    cat model_cla_SVC.log
+    cat model_cla_SVC_linear.log
+     ;;
+
+    4.1.5) echo "Check model_cla_SVC_rbf log files..."
+    cd $Log/model_selection
+    cat model_cla_SVC_rbf.log
+     ;;
+
+    4.1.6) echo "Check model_cla_GradientBoostingClassifier log files..."
+    cd $Log/model_selection
+    cat model_cla_GradientBoostingClassifier.log
+     ;;
+
+    4.2.1) echo "Check model_reg_Lasso log files..."
+    cd $Log/model_selection
+    cat model_reg_Lasso.log
+     ;;
+
+    4.2.2) echo "Check model_reg_Ridge log files..."
+    cd $Log/model_selection
+    cat model_reg_Ridge.log
+     ;;
+
+    4.2.3) echo "Check model_reg_GradientBoostingRegressor_huber log files..."
+    cd $Log/model_selection
+    cat model_reg_GradientBoostingRegressor_huber.log
+     ;;
+
+    4.2.4) echo "Check model_reg_GradientBoostingRegressor_lslad log files..."
+    cd $Log/model_selection
+    cat model_reg_GradientBoostingRegressor_lslad.log
+     ;;
+
+    4.2.5) echo "Check model_reg_LinearSVR log files..."
+    cd $Log/model_selection
+    cat model_reg_LinearSVR.log
+     ;;
+
+    4.2.6) echo "Check model_reg_RandomForestRegressor log files..."
+    cd $Log/model_selection
+    cat model_reg_RandomForestRegressor.log
+     ;;
+
+    4.2.7) echo "Check model_reg_SVR_linear log files..."
+    cd $Log/model_selection
+    cat model_reg_SVR_linear.log
+     ;;
+
+    4.2.8) echo "Check model_reg_SVR_rbf log files..."
+    cd $Log/model_selection
+    cat model_reg_SVR_rbf.log
      ;;
 
     5) echo "Check model_tpot log files..."
