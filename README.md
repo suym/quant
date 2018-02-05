@@ -8,5 +8,5 @@ Preliminary framework
 
 > cd $HOME/quant
 
-> git clone git@github.com:suym/quant.git quant
+> git clone git@github.com:suym/quant.git v0.1
 

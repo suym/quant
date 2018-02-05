@@ -11,7 +11,7 @@ from DIY_data import data_from_input
 if __name__ == "__main__":
     X,Y = data_from_input()
     X_train, X_test, y_train, y_test = train_test_split(X, Y,
-                                                    train_size=0.75, test_size=0.25,stratify=Y)
+                                                    train_size=0.75, test_size=0.25,stratify=Y,random_state=0)
     results = GS_RandomForestClassifier(X_train, X_test, y_train, y_test)
     
     print 'The best parameters %s'%results[0]

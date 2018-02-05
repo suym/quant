@@ -15,7 +15,7 @@ from sklearn.decomposition import PCA, IncrementalPCA
 if __name__ == "__main__":
     X,Y = data_from_input()
     
-    with open('/besfs/users/suym/6.6.4.p01/Analysis/plot/python_doc/quant/chk_jobs/cla_log.dat','r') as f:
+    with open('/besfs/users/suym/6.6.4.p01/Analysis/plot/python_doc/quant/run/inf_log/cla_log.dat','r') as f:
         lines = f.readlines()
         for line in lines:
             if 'GradientBoostingClassifier' in line:

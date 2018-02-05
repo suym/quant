@@ -19,7 +19,7 @@ from sklearn.feature_selection import RFE, f_regression, chi2, f_classif
 from minepy import MINE
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import GridSearchCV,RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV,RandomizedSearchCV,KFold,StratifiedKFold
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from sklearn.decomposition import PCA, IncrementalPCA
@@ -90,7 +90,7 @@ def store_data(symbol, start_date, end_date):
     date1 = start_date.strftime("%Y%m%d")
     date2 = end_date.strftime("%Y%m%d")
     filename = symbol+'/'+date1+'__'+date2
-    filepath = '/besfs/users/suym/6.6.4.p01/Analysis/plot/python_doc/quant/run/tushare'
+    filepath = '/besfs/users/suym/6.6.4.p01/Analysis/plot/python_doc/quant/run/tushare_data'
     path = filepath+'/'+filename
     if path != '' and not os.access(path, os.F_OK) :
         sys.stdout.write('Creating dir %s ...\n'  % path)
@@ -156,12 +156,17 @@ def features_com_cla(X, Y):
     
     return ranks
 
+# ---------------------------------------------
+# Function of classification
+# ---------------------------------------------
+
 def GS_LogisticRegression(*data):
     X_train, X_test, y_train, y_test = data
     tuned_parameters_1 = [{'penalty':['l1','l2'], 'C':[0.01,1],
                         'solver':['liblinear']}
                         ]
-    clf_1 =GridSearchCV(LogisticRegression(tol = 1e-6), tuned_parameters_1, cv =10, n_jobs=-1)
+    C_V = StratifiedKFold(n_splits=5,random_state=0)
+    clf_1 =GridSearchCV(LogisticRegression(tol = 1e-6), tuned_parameters_1, cv =C_V, n_jobs=-1)
     clf_1.fit(X_train,y_train)
     best_par_1 = clf_1.best_params_
     best_par_penalty = best_par_1['penalty']
@@ -169,7 +174,7 @@ def GS_LogisticRegression(*data):
     tuned_parameters = [{'penalty':[best_par_penalty], 'C':[0.001,0.01,0.2,1,8,50],
                         'solver':['liblinear']}
                         ]
-    clf =GridSearchCV(LogisticRegression(tol = 1e-6), tuned_parameters, cv =10, n_jobs=-1)
+    clf =GridSearchCV(LogisticRegression(tol = 1e-6), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "
@@ -187,7 +192,8 @@ def GS_LinearSVC(*data):
     tuned_parameters_1 = [{'penalty':['l2'], 'C':[1,0.1],
                         'loss':['hinge','squared_hinge']}
                         ]
-    clf_1 =GridSearchCV(LinearSVC(tol = 1e-6), tuned_parameters_1, cv =5, n_jobs=-1)
+    C_V = StratifiedKFold(n_splits=5,random_state=0)
+    clf_1 =GridSearchCV(LinearSVC(tol = 1e-6), tuned_parameters_1, cv =C_V, n_jobs=-1)
     clf_1.fit(X_train,y_train)
     best_par_1 = clf_1.best_params_
     best_par_loss = best_par_1['loss']
@@ -195,7 +201,7 @@ def GS_LinearSVC(*data):
     tuned_parameters = [{'penalty':['l2'], 'C':[0.001,0.01,0.2,1,8,50],
                         'loss':[best_par_loss]}
                         ]
-    clf =GridSearchCV(LinearSVC(tol = 1e-6), tuned_parameters, cv =5, n_jobs=-1)
+    clf =GridSearchCV(LinearSVC(tol = 1e-6), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "
@@ -213,7 +219,8 @@ def GS_SVC_linear(*data):
     tuned_parameters = [{'C':[0.001,0.01,0.2,1,8,50],
                         'kernel':['linear']}
                         ]
-    clf =GridSearchCV(SVC(tol = 1e-6), tuned_parameters, cv =5, n_jobs=-1)
+    C_V = StratifiedKFold(n_splits=5,random_state=0)
+    clf =GridSearchCV(SVC(tol = 1e-6), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "
@@ -226,17 +233,18 @@ def GS_SVC_linear(*data):
 def GS_SVC_rbf(*data):
     X_train, X_test, y_train, y_test = data
     tuned_parameters_1 = [{'C':[1],'kernel':['rbf'],
-                        'gamma':[0.01,0.1,1,10,50]}
+                        'gamma':[0.001,0.01]}
                         ]
-    clf_1 =GridSearchCV(SVC(tol = 1e-6), tuned_parameters_1, cv =5, n_jobs=-1)
+    C_V = StratifiedKFold(n_splits=5,random_state=0)
+    clf_1 =GridSearchCV(SVC(tol = 1e-6), tuned_parameters_1, cv =C_V, n_jobs=-1)
     clf_1.fit(X_train,y_train)
     best_par_1 = clf_1.best_params_
     best_par_gamma = best_par_1['gamma']
     
-    tuned_parameters = [{'C':[0.001,0.01,0.2,1,8,50],'kernel':['rbf'],
+    tuned_parameters = [{'C':[0.1,1],'kernel':['rbf'],
                         'gamma':[best_par_gamma]}
                         ]
-    clf =GridSearchCV(SVC(tol = 1e-6), tuned_parameters, cv =5, n_jobs=-1)
+    clf =GridSearchCV(SVC(tol = 1e-6), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "
@@ -254,7 +262,8 @@ def GS_RandomForestClassifier(*data):
     tuned_parameters_1 = [{'n_estimators':[300],
                         'max_features':[0.5,0.8,1]}
                         ]
-    clf_1 =GridSearchCV(RandomForestClassifier(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_1, cv =5, n_jobs=-1)
+    C_V = StratifiedKFold(n_splits=5,random_state=0)
+    clf_1 =GridSearchCV(RandomForestClassifier(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_1, cv =C_V, n_jobs=-1)
     clf_1.fit(X_train,y_train)
     best_par_1 = clf_1.best_params_
     best_par_f = best_par_1['max_features']
@@ -262,7 +271,7 @@ def GS_RandomForestClassifier(*data):
     tuned_parameters = [{'n_estimators':[400],'max_depth':[best_par_d],
                         'max_features':[best_par_f]}
                         ]
-    clf =GridSearchCV(RandomForestClassifier(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters, cv =5, n_jobs=-1)
+    clf =GridSearchCV(RandomForestClassifier(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "
@@ -280,7 +289,8 @@ def GS_GradientBoostingClassifier(*data):
     tuned_parameters_1 = [{'n_estimators':[200],'max_depth':[5],
                         'max_features':[0.5],'loss':['deviance','exponential']}
                         ]
-    clf_1 =GridSearchCV(GradientBoostingClassifier(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_1, cv =5, n_jobs=-1)
+    C_V = StratifiedKFold(n_splits=5,random_state=0)
+    clf_1 =GridSearchCV(GradientBoostingClassifier(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_1, cv =C_V, n_jobs=-1)
     clf_1.fit(X_train,y_train)
     best_par_1 = clf_1.best_params_
     best_par_loss = best_par_1['loss']
@@ -288,7 +298,7 @@ def GS_GradientBoostingClassifier(*data):
     tuned_parameters_2 = [{'n_estimators':[200],'max_depth':[5,10,15,20],
                         'max_features':[0.5],'loss':[best_par_loss]}
                         ]
-    clf_2 =GridSearchCV(GradientBoostingClassifier(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_2, cv =5, n_jobs=-1)
+    clf_2 =GridSearchCV(GradientBoostingClassifier(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_2, cv =C_V, n_jobs=-1)
     clf_2.fit(X_train,y_train)
     best_par_2 = clf_2.best_params_
     best_par_d = best_par_2['max_depth']
@@ -296,7 +306,7 @@ def GS_GradientBoostingClassifier(*data):
     tuned_parameters_3 = [{'n_estimators':[200],'max_depth':[best_par_d],
                         'max_features':[0.2,0.5,0.8],'loss':[best_par_loss]}
                         ]
-    clf_3 =GridSearchCV(GradientBoostingClassifier(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_3, cv =5, n_jobs=-1)
+    clf_3 =GridSearchCV(GradientBoostingClassifier(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_3, cv =C_V, n_jobs=-1)
     clf_3.fit(X_train,y_train)
     best_par_3 = clf_3.best_params_
     best_par_f = best_par_3['max_features']
@@ -304,7 +314,7 @@ def GS_GradientBoostingClassifier(*data):
     tuned_parameters = [{'n_estimators':[400],'max_depth':[best_par_d],
                         'max_features':[best_par_f],'loss':[best_par_loss]}
                         ]
-    clf =GridSearchCV(GradientBoostingClassifier(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters, cv =5, n_jobs=-1)
+    clf =GridSearchCV(GradientBoostingClassifier(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "
@@ -324,14 +334,15 @@ def GS_GradientBoostingClassifier(*data):
     return clf.best_params_, clf.score(X_test,y_test)
 
 # ---------------------------------------------
-# 
+# Function of regression
 # ---------------------------------------------
 
 def GS_Lasso(*data):
     X_train, X_test, y_train, y_test = data
     tuned_parameters = [{'alpha':[0.0005,0.001,0.005,0.01,0.05,0.1,0.3,0.5,0.7,1,5,10,20,30,50,70]}]
     
-    clf =GridSearchCV(Lasso(tol = 1e-6), tuned_parameters, cv =10, n_jobs=-1)
+    C_V = KFold(n_splits=5,random_state=0)
+    clf =GridSearchCV(Lasso(tol = 1e-6), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "
@@ -345,7 +356,8 @@ def GS_Ridge(*data):
     X_train, X_test, y_train, y_test = data
     tuned_parameters = [{'alpha':[0.0005,0.001,0.005,0.01,0.05,0.1,0.3,0.5,0.7,1,5,10,20,30,50,70]}]
     
-    clf =GridSearchCV(Ridge(tol = 1e-6), tuned_parameters, cv =10, n_jobs=-1)
+    C_V = KFold(n_splits=5,random_state=0)
+    clf =GridSearchCV(Ridge(tol = 1e-6), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "
@@ -360,7 +372,8 @@ def GS_LinearSVR(*data):
     tuned_parameters_1 = [{'epsilon':[0.06], 'C':[1],
                         'loss':['epsilon_insensitive','squared_epsilon_insensitive']}
                         ]
-    clf_1 =GridSearchCV(LinearSVR(tol = 1e-6), tuned_parameters_1, cv =5, n_jobs=-1)
+    C_V = KFold(n_splits=5,random_state=0)
+    clf_1 =GridSearchCV(LinearSVR(tol = 1e-6), tuned_parameters_1, cv =C_V, n_jobs=-1)
     clf_1.fit(X_train,y_train)
     best_par_1 = clf_1.best_params_
     best_par_loss = best_par_1['loss']
@@ -368,7 +381,7 @@ def GS_LinearSVR(*data):
     tuned_parameters_2 = [{'epsilon':[0.06], 'C':[0.001,0.01,0.1,1,10,50],
                         'loss':[best_par_loss]}
                         ]
-    clf_2 =GridSearchCV(LinearSVR(tol = 1e-6), tuned_parameters_2, cv =5, n_jobs=-1)
+    clf_2 =GridSearchCV(LinearSVR(tol = 1e-6), tuned_parameters_2, cv =C_V, n_jobs=-1)
     clf_2.fit(X_train,y_train)
     best_par_2 = clf_2.best_params_
     best_par_c = best_par_2['C']
@@ -376,7 +389,7 @@ def GS_LinearSVR(*data):
     tuned_parameters = [{'epsilon':[0.005,0.06,0.1,0.8,5], 'C':[best_par_c],
                         'loss':[best_par_loss]}
                         ]
-    clf =GridSearchCV(LinearSVR(tol = 1e-6), tuned_parameters, cv =5, n_jobs=-1)
+    clf =GridSearchCV(LinearSVR(tol = 1e-6), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "
@@ -394,18 +407,19 @@ def GS_LinearSVR(*data):
 
 def GS_SVR_linear(*data):
     X_train, X_test, y_train, y_test = data
-    tuned_parameters_1 = [{'epsilon':[0.005,0.06,0.1,0.8,5],'C':[1],
+    tuned_parameters_1 = [{'epsilon':[0.005,0.06],'C':[1],
                         'kernel':['linear']}
                         ]
-    clf_1 =GridSearchCV(SVR(tol = 1e-6), tuned_parameters_1, cv =5, n_jobs=-1)
+    C_V = KFold(n_splits=5,random_state=0)
+    clf_1 =GridSearchCV(SVR(tol = 1e-6), tuned_parameters_1, cv =C_V, n_jobs=-1)
     clf_1.fit(X_train,y_train)
     best_par_1 = clf_1.best_params_
     best_par_eps = best_par_1['epsilon']
     
-    tuned_parameters = [{'epsilon':[best_par_eps],'C':[0.001,0.01,0.2,1,8,50],
+    tuned_parameters = [{'epsilon':[best_par_eps],'C':[0.1,1],
                         'kernel':['linear']}
                         ]
-    clf =GridSearchCV(SVR(tol = 1e-6), tuned_parameters, cv =5, n_jobs=-1)
+    clf =GridSearchCV(SVR(tol = 1e-6), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "
@@ -420,32 +434,23 @@ def GS_SVR_linear(*data):
 
 def GS_SVR_rbf(*data):
     X_train, X_test, y_train, y_test = data
-    tuned_parameters_1 = [{'epsilon':[0.06],'C':[1],'kernel':['rbf'],
-                        'gamma':[0.01,0.1,1,10,50]}
-                        ]
-    clf_1 =GridSearchCV(SVR(tol = 1e-6), tuned_parameters_1, cv =5, n_jobs=-1)
-    clf_1.fit(X_train,y_train)
-    best_par_1 = clf_1.best_params_
-    best_par_gamma = best_par_1['gamma']
     
-    tuned_parameters_2 = [{'epsilon':[0.005,0.01,0.06,0.8,5],'C':[1],'kernel':['rbf'],
-                        'gamma':[best_par_gamma]}
+    tuned_parameters_2 = [{'epsilon':[0.005,0.06],'C':[1],'kernel':['rbf'],
+                        'gamma':[0.001]}
                         ]
-    clf_2 =GridSearchCV(SVR(tol = 1e-6), tuned_parameters_2, cv =5, n_jobs=-1)
+    C_V = KFold(n_splits=5,random_state=0)
+    clf_2 =GridSearchCV(SVR(tol = 1e-6), tuned_parameters_2, cv =C_V, n_jobs=-1)
     clf_2.fit(X_train,y_train)
     best_par_2 = clf_2.best_params_
     best_par_eps = best_par_2['epsilon']
     
-    tuned_parameters = [{'epsilon':[best_par_eps],'C':[0.001,0.01,0.1,1,8,50],'kernel':['rbf'],
-                        'gamma':[best_par_gamma]}
+    tuned_parameters = [{'epsilon':[best_par_eps],'C':[0.1,1],'kernel':['rbf'],
+                        'gamma':[0.001]}
                         ]
-    clf =GridSearchCV(SVR(tol = 1e-6), tuned_parameters, cv =5, n_jobs=-1)
+    clf =GridSearchCV(SVR(tol = 1e-6), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "
-    for params_1, mean_score_1, scores_1, in clf_1.grid_scores_:
-        print "\t%0.3f (+/-%0.03f) for %s"%(mean_score_1, scores_1.std()*2,params_1)
-    print "_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-"
     for params_2, mean_score_2, scores_2, in clf_2.grid_scores_:
         print "\t%0.3f (+/-%0.03f) for %s"%(mean_score_2, scores_2.std()*2,params_2)
     print "_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-"
@@ -461,7 +466,8 @@ def GS_RandomForestRegressor(*data):
     tuned_parameters_1 = [{'n_estimators':[300],
                         'max_features':[0.5,0.8,1]}
                         ]
-    clf_1 =GridSearchCV(RandomForestRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_1, cv =5, n_jobs=-1)
+    C_V = KFold(n_splits=5,random_state=0)
+    clf_1 =GridSearchCV(RandomForestRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_1, cv =C_V, n_jobs=-1)
     clf_1.fit(X_train,y_train)
     best_par_1 = clf_1.best_params_
     best_par_f = best_par_1['max_features']
@@ -469,7 +475,7 @@ def GS_RandomForestRegressor(*data):
     tuned_parameters = [{'n_estimators':[400],
                         'max_features':[best_par_f]}
                         ]
-    clf =GridSearchCV(RandomForestRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters, cv =5, n_jobs=-1)
+    clf =GridSearchCV(RandomForestRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "
@@ -487,7 +493,8 @@ def GS_GradientBoostingRegressor_lslad(*data):
     tuned_parameters_1 = [{'n_estimators':[200],'max_depth':[5],
                         'max_features':[0.5],'loss':['ls','lad']}
                         ]
-    clf_1 =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_1, cv =5, n_jobs=-1)
+    C_V = KFold(n_splits=5,random_state=0)
+    clf_1 =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_1, cv =C_V, n_jobs=-1)
     clf_1.fit(X_train,y_train)
     best_par_1 = clf_1.best_params_
     best_par_loss = best_par_1['loss']
@@ -495,7 +502,7 @@ def GS_GradientBoostingRegressor_lslad(*data):
     tuned_parameters_2 = [{'n_estimators':[200],'max_depth':[5,10,15,20],
                         'max_features':[0.5],'loss':[best_par_loss]}
                         ]
-    clf_2 =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_2, cv =5, n_jobs=-1)
+    clf_2 =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_2, cv =C_V, n_jobs=-1)
     clf_2.fit(X_train,y_train)
     best_par_2 = clf_2.best_params_
     best_par_d = best_par_2['max_depth']
@@ -503,7 +510,7 @@ def GS_GradientBoostingRegressor_lslad(*data):
     tuned_parameters_3 = [{'n_estimators':[200],'max_depth':[best_par_d],
                         'max_features':[0.2,0.5,0.8],'loss':[best_par_loss]}
                         ]
-    clf_3 =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_3, cv =5, n_jobs=-1)
+    clf_3 =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_3, cv =C_V, n_jobs=-1)
     clf_3.fit(X_train,y_train)
     best_par_3 = clf_3.best_params_
     best_par_f = best_par_3['max_features']
@@ -511,7 +518,7 @@ def GS_GradientBoostingRegressor_lslad(*data):
     tuned_parameters = [{'n_estimators':[400],'max_depth':[best_par_d],
                         'max_features':[best_par_f],'loss':[best_par_loss]}
                         ]
-    clf =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters, cv =5, n_jobs=-1)
+    clf =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "
@@ -535,7 +542,8 @@ def GS_GradientBoostingRegressor_huber(*data):
     tuned_parameters_1 = [{'n_estimators':[200],'max_depth':[5,10,15,20],
                         'max_features':[0.5],'loss':['huber'],'alpha':[0.9]}
                         ]
-    clf_1 =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_1, cv =5, n_jobs=-1)
+    C_V = KFold(n_splits=5,random_state=0)
+    clf_1 =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_1, cv =C_V, n_jobs=-1)
     clf_1.fit(X_train,y_train)
     best_par_1 = clf_1.best_params_
     best_par_d = best_par_1['max_depth']
@@ -543,7 +551,7 @@ def GS_GradientBoostingRegressor_huber(*data):
     tuned_parameters_2 = [{'n_estimators':[200],'max_depth':[best_par_d],
                         'max_features':[0.2,0.5,0.8],'loss':['huber'],'alpha':[0.9]}
                         ]
-    clf_2 =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_2, cv =5, n_jobs=-1)
+    clf_2 =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_2, cv =C_V, n_jobs=-1)
     clf_2.fit(X_train,y_train)
     best_par_2 = clf_2.best_params_
     best_par_f = best_par_2['max_features']
@@ -551,7 +559,7 @@ def GS_GradientBoostingRegressor_huber(*data):
     tuned_parameters_3 = [{'n_estimators':[200],'max_depth':[best_par_d],
                         'max_features':[best_par_f],'loss':['huber'],'alpha':[0.2,0.5,0.9]}
                         ]
-    clf_3 =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_3, cv =5, n_jobs=-1)
+    clf_3 =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters_3, cv =C_V, n_jobs=-1)
     clf_3.fit(X_train,y_train)
     best_par_3 = clf_3.best_params_
     best_par_alpha = best_par_3['alpha']
@@ -559,7 +567,7 @@ def GS_GradientBoostingRegressor_huber(*data):
     tuned_parameters = [{'n_estimators':[400],'max_depth':[best_par_d],
                         'max_features':[best_par_f],'loss':['huber'],'alpha':[best_par_alpha]}
                         ]
-    clf =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters, cv =5, n_jobs=-1)
+    clf =GridSearchCV(GradientBoostingRegressor(min_samples_split = 20, min_samples_leaf = 8), tuned_parameters, cv =C_V, n_jobs=-1)
     clf.fit(X_train,y_train)
     print "Best parameters set found: ",clf.best_params_
     print "Grid scores: "

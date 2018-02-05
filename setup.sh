@@ -15,7 +15,7 @@ case $option in
     1) echo "The following software needs to be installed....."
        echo "         "
        echo "Anaconda2"
-       echo "tushare, minepy, pandas-datareader"
+       echo "tushare, minepy, pandas-datareader, sklearn-deap"
        echo "py-xgboost, TPOT, jupyter_contrib_nbextensions"
        echo "root_numpy, root_pandas, deap, keras"
        echo "         "
@@ -24,7 +24,7 @@ case $option in
        echo "         "
        echo "conda install py-xgboost, keras"
        echo "pip install tushare, minepy, pandas-datareader, TPOT"
-       echo "pip install root_numpy, root_pandas, deap"
+       echo "pip install root_numpy, root_pandas, deap, sklearn-deap"
        echo "conda install -c conda-forge jupyter_contrib_nbextensions"
        echo "         "
        ;;
