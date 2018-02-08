@@ -1,5 +1,6 @@
-# no emacs temp files
+# no temp files
 *~
+*.swp
 # no pyc files
 *.pyc
 # no data files

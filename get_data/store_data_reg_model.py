@@ -30,7 +30,7 @@ if __name__ == "__main__":
             if 'GradientBoostingRegressor_lslad' in line:
                 gbr_ld_par = line.split('found:')[1]
                 gbr_ld_par = eval(gbr_ld_par)
-            if 'Lasso' in lines:
+            if 'Lasso' in line:
                 lasso_par = line.split('found:')[1]
                 lasso_par = eval(lasso_par)
             if 'LinearSVR' in line:
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     reg_rfr = RandomForestRegressor(min_samples_split = 20, min_samples_leaf = 8,
                                     max_features=rfr_par['max_features'],n_estimators=rfr_par['n_estimators'])
     reg_ridge = Ridge(alpha=ridge_par['alpha'])
-    reg_svr_lr = SVR(epsilon=svr_lr_par['epsilon'],C=svr_lr_par['C'],kernel=svr_lr_par['kernel'])
+    #reg_svr_lr = SVR(epsilon=svr_lr_par['epsilon'],C=svr_lr_par['C'],kernel=svr_lr_par['kernel'])
     reg_svr_rbf = SVR(epsilon=svr_rbf_par['epsilon'],C=svr_rbf_par['C'],kernel=svr_rbf_par['kernel'],gamma=svr_rbf_par['gamma'])
     
     gbr_hu_pred=cross_val_predict(reg_gbr_hu,X,Y,cv=C_V)
@@ -72,16 +72,17 @@ if __name__ == "__main__":
     lrsvr_pred=cross_val_predict(reg_lrsvr,X,Y,cv=C_V)
     rfr_pred=cross_val_predict(reg_rfr,X,Y,cv=C_V)
     ridge_pred=cross_val_predict(reg_ridge,X,Y,cv=C_V)
-    svr_lr_pred=cross_val_predict(reg_svr_lr,X,Y,cv=C_V)
+    #svr_lr_pred=cross_val_predict(reg_svr_lr,X,Y,cv=C_V)
     svr_rbf_pred=cross_val_predict(reg_svr_rbf,X,Y,cv=C_V)
     
     total_ret = pd.DataFrame(index=Y.index)
     feature_names = ['gbr_hu_pred','gbr_ld_pred','lasso_pred','lrsvr_pred',
-                     'rfr_pred','ridge_pred','svr_lr_pred','svr_rbf_pred','Y']
+                     'rfr_pred','ridge_pred','svr_rbf_pred','Y']
     for fn in feature_names:
         total_ret[fn]=eval(fn)
     
     total_ret.to_csv('%s/%s.csv'%(path,filename))
+    print 'Mark the finish line'
     
     
     

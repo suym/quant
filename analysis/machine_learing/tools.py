@@ -161,6 +161,8 @@ def features_com_cla(X, Y):
 # ---------------------------------------------
 
 def GS_LogisticRegression(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     tuned_parameters_1 = [{'penalty':['l1','l2'], 'C':[0.01,1],
                         'solver':['liblinear']}
@@ -188,6 +190,8 @@ def GS_LogisticRegression(*data):
     return clf.best_params_, clf.score(X_test,y_test)
 
 def GS_LinearSVC(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     tuned_parameters_1 = [{'penalty':['l2'], 'C':[1,0.1],
                         'loss':['hinge','squared_hinge']}
@@ -215,6 +219,8 @@ def GS_LinearSVC(*data):
     return clf.best_params_, clf.score(X_test,y_test)
 
 def GS_SVC_linear(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     tuned_parameters = [{'C':[0.001,0.01,0.2,1,8,50],
                         'kernel':['linear']}
@@ -231,6 +237,8 @@ def GS_SVC_linear(*data):
     return clf.best_params_, clf.score(X_test,y_test)
 
 def GS_SVC_rbf(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     tuned_parameters_1 = [{'C':[1],'kernel':['rbf'],
                         'gamma':[0.001,0.01]}
@@ -258,6 +266,8 @@ def GS_SVC_rbf(*data):
     return clf.best_params_, clf.score(X_test,y_test)
 
 def GS_RandomForestClassifier(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     tuned_parameters_1 = [{'n_estimators':[300],
                         'max_features':[0.5,0.8,1]}
@@ -285,6 +295,8 @@ def GS_RandomForestClassifier(*data):
     return clf.best_params_, clf.score(X_test,y_test)
 
 def GS_GradientBoostingClassifier(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     tuned_parameters_1 = [{'n_estimators':[200],'max_depth':[5],
                         'max_features':[0.5],'loss':['deviance','exponential']}
@@ -338,6 +350,8 @@ def GS_GradientBoostingClassifier(*data):
 # ---------------------------------------------
 
 def GS_Lasso(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     tuned_parameters = [{'alpha':[0.0005,0.001,0.005,0.01,0.05,0.1,0.3,0.5,0.7,1,5,10,20,30,50,70]}]
     
@@ -353,6 +367,8 @@ def GS_Lasso(*data):
     return clf.best_params_, clf.score(X_test,y_test)
 
 def GS_Ridge(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     tuned_parameters = [{'alpha':[0.0005,0.001,0.005,0.01,0.05,0.1,0.3,0.5,0.7,1,5,10,20,30,50,70]}]
     
@@ -368,6 +384,8 @@ def GS_Ridge(*data):
     return clf.best_params_, clf.score(X_test,y_test)
 
 def GS_LinearSVR(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     tuned_parameters_1 = [{'epsilon':[0.06], 'C':[1],
                         'loss':['epsilon_insensitive','squared_epsilon_insensitive']}
@@ -406,6 +424,8 @@ def GS_LinearSVR(*data):
     return clf.best_params_, clf.score(X_test,y_test)
 
 def GS_SVR_linear(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     tuned_parameters_1 = [{'epsilon':[0.005,0.06],'C':[1],
                         'kernel':['linear']}
@@ -433,6 +453,8 @@ def GS_SVR_linear(*data):
     return clf.best_params_, clf.score(X_test,y_test)
 
 def GS_SVR_rbf(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     
     tuned_parameters_2 = [{'epsilon':[0.005,0.06],'C':[1],'kernel':['rbf'],
@@ -461,6 +483,8 @@ def GS_SVR_rbf(*data):
     return clf.best_params_, clf.score(X_test,y_test)
 
 def GS_RandomForestRegressor(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     
     tuned_parameters_1 = [{'n_estimators':[300],
@@ -489,6 +513,8 @@ def GS_RandomForestRegressor(*data):
     return clf.best_params_, clf.score(X_test,y_test)
 
 def GS_GradientBoostingRegressor_lslad(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     tuned_parameters_1 = [{'n_estimators':[200],'max_depth':[5],
                         'max_features':[0.5],'loss':['ls','lad']}
@@ -538,6 +564,8 @@ def GS_GradientBoostingRegressor_lslad(*data):
     return clf.best_params_, clf.score(X_test,y_test)
 
 def GS_GradientBoostingRegressor_huber(*data):
+    if len(data)!=4:
+        raise NameError('Dimension of the input is not equal to 4')
     X_train, X_test, y_train, y_test = data
     tuned_parameters_1 = [{'n_estimators':[200],'max_depth':[5,10,15,20],
                         'max_features':[0.5],'loss':['huber'],'alpha':[0.9]}

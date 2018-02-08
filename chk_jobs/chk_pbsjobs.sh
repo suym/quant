@@ -27,9 +27,12 @@ if [[ $# -eq 0 ]]; then
     printf "\n\t%-5s  %-40s\n"  "4.2.6"  "Check model_reg_RandomForestRegressor log files  "
     printf "\n\t%-5s  %-40s\n"  "4.2.7"  "Check model_reg_SVR_linear log files  "
     printf "\n\t%-5s  %-40s\n"  "4.2.8"  "Check model_reg_SVR_rbf log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.2.9"  "Check model_reg_LSTM log files  "
     printf "\n\t%-5s  %-40s\n"  "5"  "Check model_tpot log files  "
     printf "\n\t%-5s  %-40s\n"  "5.1"  "Check model_cla_tpot log files  "
     printf "\n\t%-5s  %-40s\n"  "5.2"  "Check model_reg_tpot log files  "
+    printf "\n\t%-5s  %-40s\n"  "6"  "Check store_data log files  "
+    printf "\n\t%-5s  %-40s\n"  "6.1"  "Check store_data_reg_model log files  "
 fi
 
 
@@ -124,6 +127,11 @@ case $option in
     cat model_reg_SVR_rbf.log
      ;;
 
+    4.2.9) echo "Check model_reg_LSTM log files..."
+    cd $Log/model_selection
+    cat model_reg_LSTM.log
+     ;;
+
     5) echo "Check model_tpot log files..."
 	    ;;
 
@@ -136,6 +144,15 @@ case $option in
     cd $Log/model_tpot
     cat model_reg_tpot.log
      ;;
+
+    6) echo "Check store_data log files..."
+	    ;;
+
+    6.1) echo "Check store_data_reg_model log files..."
+    cd $Log/store_data
+    cat store_data_reg_model.log
+     ;;
+
 
 esac
 

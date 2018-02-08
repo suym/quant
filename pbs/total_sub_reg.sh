@@ -12,4 +12,5 @@ cd $Work_Dir/pbs
 ./sub_reg_Ridge.sh
 ./sub_reg_SVR_linear.sh
 ./sub_reg_SVR_rbf.sh
+./sub_reg_LSTM.sh
 
