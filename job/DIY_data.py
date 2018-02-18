@@ -45,8 +45,19 @@ def data_from_hft_pca():
     
     return X,Y
 
+def data_from_hft_ensemble_data():
+    hft = pd.read_csv('/besfs/users/suym/6.6.4.p01/Analysis/plot/python_doc/quant/run/ensemble_data/HFT_data/first_htf_data.csv')
+    names = ['Y','Unnamed: 0']
+    x_ori = hft.drop(names, axis = 1)
+    scaler = StandardScaler().fit(x_ori)
+    X = scaler.transform(x_ori)
+    X = pd.DataFrame(X, index = x_ori.index, columns = x_ori.columns)
+    Y = hft["Y"]
+    
+    return X,Y
+
 def data_from_input():
-    X_input, Y_input = data_from_hft()
+    X_input, Y_input = data_from_hft_ensemble_data()
  
     return X_input,Y_input
     

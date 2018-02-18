@@ -11,7 +11,7 @@
 *.log
 *.err 
 # jupyter
-python_vs_machine/.ipynb_checkpoints/
+notebook/.ipynb_checkpoints/
 share/.ipynb_checkpoints/
 analysis/machine_learing/.ipynb_checkpoints/
 run/
