@@ -7,6 +7,9 @@
 *.csv
 *.dat
 *.root
+*.pkl
+rqalpha/bundle
+rqalpha/examples
 # no log files
 *.log
 *.err 
