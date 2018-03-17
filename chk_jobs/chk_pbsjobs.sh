@@ -28,6 +28,7 @@ if [[ $# -eq 0 ]]; then
     printf "\n\t%-5s  %-40s\n"  "4.2.7"  "Check model_reg_SVR_linear log files  "
     printf "\n\t%-5s  %-40s\n"  "4.2.8"  "Check model_reg_SVR_rbf log files  "
     printf "\n\t%-5s  %-40s\n"  "4.2.9"  "Check model_reg_LSTM log files  "
+    printf "\n\t%-5s  %-40s\n"  "4.2.10"  "Check model_reg_MFNN log files  "
     printf "\n\t%-5s  %-40s\n"  "5"  "Check model_tpot log files  "
     printf "\n\t%-5s  %-40s\n"  "5.1"  "Check model_cla_tpot log files  "
     printf "\n\t%-5s  %-40s\n"  "5.2"  "Check model_reg_tpot log files  "
@@ -131,6 +132,12 @@ case $option in
     cd $Log/model_selection
     cat model_reg_LSTM.log
      ;;
+
+    4.2.10) echo "Check model_reg_MFNN log files..."
+    cd $Log/model_selection
+    cat model_reg_MFNN.log
+     ;;
+
 
     5) echo "Check model_tpot log files..."
 	    ;;

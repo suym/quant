@@ -10,7 +10,7 @@ cd $Dir_1
 rm reg_log.dat -f
 
 declare -a array=('GradientBoostingRegressor_huber' 'GradientBoostingRegressor_lslad' 'Lasso' 'LinearSVR'
-                  'RandomForestRegressor' 'Ridge' 'SVR_linear' 'SVR_rbf')
+                  'RandomForestRegressor' 'Ridge' 'SVR_linear' 'SVR_rbf' 'LSTM' 'MFNN')
 
 for num in ${array[@]}
 do

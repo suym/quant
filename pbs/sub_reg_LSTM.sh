@@ -8,7 +8,7 @@ Log_File=${Log_Dir}/model_reg_LSTM.log
 eLog_File=${Log_Dir}/model_reg_LSTM.err
 
 
-hep_sub -g physics -o ${Log_File}  -e ${eLog_File} -mem 5000 ${Work_Dir}/pbs/raw/model_reg_LSTM.sh
+hep_sub -g physics -o ${Log_File}  -e ${eLog_File} -mem 6000 ${Work_Dir}/pbs/raw/model_reg_LSTM.sh
 
 
 
